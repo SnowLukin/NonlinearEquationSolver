@@ -4,11 +4,7 @@ import time
 
 
 def f(x):
-    # return x * x * x - 18 * x - 83
-    # return x * x * x + math.cos(x)
     return math.sin(x)*math.cos(x)-math.sin(x)*math.sin(x)+math.cos(x)
-    # return math.cos(x)
-    # return x * x * x - math.sin(x)
 
 
 def rectangle_rule(func, a, b, _amount_of_iterations, multiplier):
