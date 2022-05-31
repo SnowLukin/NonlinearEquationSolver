@@ -1,9 +1,14 @@
+import math
 from mpi4py import MPI
 import time
 
 
 def f(x):
-    return x * x * x - 18 * x - 83
+    # return x * x * x - 18 * x - 83
+    # return x * x * x + math.cos(x)
+    return math.sin(x)*math.cos(x)-math.sin(x)*math.sin(x)+math.cos(x)
+    # return math.cos(x)
+    # return x * x * x - math.sin(x)
 
 
 def rectangle_rule(func, a, b, _amount_of_iterations, multiplier):
@@ -55,20 +60,23 @@ def secant_method(start_segment, end_segment, epsilon, _integral_from, _integral
     return end_segment
 
 
+def main():
+    start_time = time.perf_counter()
+    integral_from = 0
+    integral_result = 3
+    amount_of_iterations = 100000
+    epsilon = 0.00001
+    x0 = -4  # initial approximation
+    x1 = x0 + 0.5
+    result = secant_method(x0, x1, epsilon, integral_from, integral_result, amount_of_iterations)
+    end_time = time.perf_counter()
+    if my_rank == 0:
+        print(f"Result: {result}")
+        print(f"Time: {end_time - start_time}")
+
+
 comm = MPI.COMM_WORLD
 my_rank = comm.Get_rank()
 p = comm.Get_size()
-start_time = time.perf_counter()
-integral_from = 8
-integral_result = 10
-amount_of_iterations = 240000
-epsilon = 0.00001
-x0 = 0  # initial approximation
-x1 = x0 + 0.5
-result = secant_method(x0, x1, epsilon, integral_from, integral_result, amount_of_iterations)
-end_time = time.perf_counter()
-if my_rank == 0:
-    print(f"Result: {result}")
-    print(f"Time: {end_time - start_time}")
+main()
 MPI.Finalize
-
